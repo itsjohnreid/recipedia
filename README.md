@@ -57,7 +57,7 @@ Mock API filters recipes server-side (simulated) using AND logic across all acti
 - Filter UI doesn't show which specific filters are active, just a count
 - Could probably do something smarter for ingredients - an object that contains an amount and an ingredient. This would open the door for measurement conversions
 
-## 🧪 Testing
+## Testing
 
 The project includes SwiftUI Previews for rapid development and visual testing. To test:
 
