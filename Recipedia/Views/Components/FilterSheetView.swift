@@ -32,6 +32,9 @@ struct FilterSheetView: View {
 
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Done") {
+                        Task {
+                            await viewModel.applyFilters()
+                        }
                         dismiss()
                     }
                 }
@@ -86,6 +89,13 @@ struct FilterSheetView: View {
                 .autocapitalization(.none)
         } header: {
             Text("Exclude Ingredients")
+        }
+        
+        Section {
+            TextField("Search in cooking steps", text: $viewModel.instructionSearch)
+                .autocapitalization(.none)
+        } header: {
+            Text("Instructions Search")
         }
     }
 }

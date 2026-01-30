@@ -7,47 +7,63 @@
 
 import Foundation
 
-@Observable
-class RecipeService {
-    enum Error: LocalizedError {
-        case fileNotFound
-        case decodingFailed(String)
-        
-        var errorDescription: String? {
-            switch self {
-            case .fileNotFound:
-                return "Could not find recipes data file."
-            case .decodingFailed(let message):
-                return "Failed to load recipes: \(message)"
-            }
+enum RecipeError: LocalizedError {
+    case loadFailed(String)
+    case decodingFailed
+    case noData
+    
+    var errorDescription: String? {
+        switch self {
+        case .loadFailed(let message):
+            return message
+        case .decodingFailed:
+            return "Failed to load recipe data"
+        case .noData:
+            return "No recipe data available"
         }
     }
-    
-    private(set) var recipes: [Recipe] = []
-    private(set) var isLoading = false
-    private(set) var error: Error?
-    
-    func loadRecipes() async {
-        isLoading = true
-        error = nil
-        
-        // Simulate network delay
-        try? await Task.sleep(nanoseconds: 500_000_000) // 0.5 seconds
-        
-        guard let url = Bundle.main.url(forResource: "recipes", withExtension: "json") else {
-            error = .fileNotFound
-            isLoading = false
-            return
-        }
-        
+}
+
+class RecipeService {
+    /// Search recipes using the mock API endpoint
+    func searchRecipes(query: SearchQuery) async throws -> [Recipe] {
         do {
-            let data = try Data(contentsOf: url)
-            let decoder = JSONDecoder()
-            recipes = try decoder.decode([Recipe].self, from: data)
+            let response = try await MockRecipeAPI.searchRecipes(query: query)
+            return response.recipes
+        } catch let error as MockRecipeAPI.APIError {
+            throw RecipeError.loadFailed(error.localizedDescription)
         } catch {
-            self.error = .decodingFailed(error.localizedDescription)
+            throw RecipeError.loadFailed("Unable to load recipes")
         }
+    }
+}
+
+extension RecipeService {
+    struct SearchQuery: Equatable {
+        var searchText: String?
+        var dietaryAttributes: [DietaryAttribute]
+        var servingsMin: Int?
+        var servingsMax: Int?
+        var includeIngredients: [String]
+        var excludeIngredients: [String]
+        var instructionSearch: String?
         
-        isLoading = false
+        init(
+            searchText: String? = nil,
+            dietaryAttributes: [DietaryAttribute] = [],
+            servingsMin: Int? = nil,
+            servingsMax: Int? = nil,
+            includeIngredients: [String] = [],
+            excludeIngredients: [String] = [],
+            instructionSearch: String? = nil
+        ) {
+            self.searchText = searchText
+            self.dietaryAttributes = dietaryAttributes
+            self.servingsMin = servingsMin
+            self.servingsMax = servingsMax
+            self.includeIngredients = includeIngredients
+            self.excludeIngredients = excludeIngredients
+            self.instructionSearch = instructionSearch
+        }
     }
 }

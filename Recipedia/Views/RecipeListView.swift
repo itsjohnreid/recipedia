@@ -22,7 +22,7 @@ struct RecipeListView: View {
                     ProgressView("Loading recipes...")
                 } else if let error = viewModel.error {
                     errorView(error: error)
-                } else if viewModel.filteredRecipes.isEmpty {
+                } else if viewModel.recipes.isEmpty {
                     emptyView
                 } else {
                     listView
@@ -33,6 +33,19 @@ struct RecipeListView: View {
                 text: $viewModel.searchText,
                 prompt: "Search recipes..."
             )
+            .onSubmit(of: .search) {
+                Task {
+                    await viewModel.performSearch()
+                }
+            }
+            .onChange(of: viewModel.searchText) { oldValue, newValue in
+                // Searches when clearing the search bar
+                if newValue.isEmpty && !oldValue.isEmpty {
+                    Task {
+                        await viewModel.performSearch()
+                    }
+                }
+            }
             .toolbar {
                 ToolbarItem(placement: .primaryAction) {
                     Button {
@@ -62,10 +75,10 @@ struct RecipeListView: View {
         }
     }
     
-    func errorView(error: RecipeService.Error) -> some View {
+    func errorView(error: RecipeError) -> some View {
         ErrorView(error: error) {
             Task {
-                await viewModel.loadRecipes()
+                await viewModel.performSearch()
             }
         }
     }
@@ -81,7 +94,7 @@ struct RecipeListView: View {
     var listView: some View {
         ScrollView {
             LazyVStack(spacing: 20) {
-                ForEach(viewModel.filteredRecipes) { recipe in
+                ForEach(viewModel.recipes) { recipe in
                     RecipeCardView(recipe: recipe)
                 }
             }

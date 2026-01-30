@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ErrorView: View {
-    let error: RecipeService.Error
+    let error: LocalizedError
     let retryAction: () -> Void
     
     var body: some View {
@@ -23,7 +23,7 @@ struct ErrorView: View {
 }
 
 #Preview {
-    ErrorView(error: .fileNotFound) {
+    ErrorView(error: RecipeError.loadFailed("Could not load recipes")) {
         print("Retry tapped")
     }
 }

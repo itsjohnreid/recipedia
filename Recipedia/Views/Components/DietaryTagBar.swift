@@ -1,5 +1,5 @@
 //
-//  DietaryScrollView.swift
+//  DietaryTagBar.swift
 //  Recipedia
 //
 //  Created by John Reid on 30/1/2026.
