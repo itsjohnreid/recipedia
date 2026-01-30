@@ -7,10 +7,9 @@
 
 import SwiftUI
 
-/// Main view displaying the list of recipes with search and filters
 struct RecipeListView: View {
     @State private var viewModel: RecipeListViewModel
-    @State private var showingFilters = false
+    @State private var isPresentedFilterMenu = false
     
     init(viewModel: RecipeListViewModel) {
         self._viewModel = State(initialValue: viewModel)
@@ -20,88 +19,79 @@ struct RecipeListView: View {
         NavigationStack {
             Group {
                 if viewModel.isLoading {
-                    // Loading State
                     ProgressView("Loading recipes...")
-                        .font(.headline)
                 } else if let error = viewModel.error {
-                    // Error State
-                    ErrorView(error: error) {
-                        Task {
-                            await viewModel.loadRecipes()
-                        }
-                    }
+                    errorView(error: error)
                 } else if viewModel.filteredRecipes.isEmpty {
-                    // Empty State
-                    EmptyStateView(
-                        hasActiveFilters: viewModel.hasActiveFilters || !viewModel.searchText.isEmpty,
-                        clearFiltersAction: {
-                            viewModel.clearFilters()
-                            viewModel.searchText = ""
-                        }
-                    )
+                    emptyView
                 } else {
-                    // Recipe List
-                    ScrollView {
-                        LazyVStack(spacing: 16) {
-                            ForEach(viewModel.filteredRecipes) { recipe in
-                                NavigationLink(destination: RecipeDetailView(recipe: recipe)) {
-                                    RecipeCardView(recipe: recipe)
-                                }
-                                .buttonStyle(PlainButtonStyle())
-                            }
-                        }
-                        .padding()
-                    }
+                    listView
                 }
             }
-            .navigationTitle("Recipes")
+            .navigationTitle("Recipedia")
             .searchable(
                 text: $viewModel.searchText,
-                placement: .navigationBarDrawer(displayMode: .always),
                 prompt: "Search recipes..."
             )
             .toolbar {
                 ToolbarItem(placement: .primaryAction) {
                     Button {
-                        showingFilters = true
+                        isPresentedFilterMenu = true
                     } label: {
-                        ZStack(alignment: .topTrailing) {
+                        HStack(spacing: 4) {
                             Image(systemName: "line.3.horizontal.decrease.circle")
-                                .font(.title3)
-                            
-                            // Badge for active filter count
                             if viewModel.activeFilterCount > 0 {
                                 Text("\(viewModel.activeFilterCount)")
-                                    .font(.caption2)
+                                    .font(.caption)
                                     .fontWeight(.bold)
                                     .foregroundStyle(.white)
                                     .frame(width: 16, height: 16)
-                                    .background(Color.red)
+                                    .background(Color.accent)
                                     .clipShape(Circle())
-                                    .offset(x: 8, y: -8)
                             }
                         }
                     }
                 }
             }
-            .sheet(isPresented: $showingFilters) {
+            .sheet(isPresented: $isPresentedFilterMenu) {
                 FilterSheetView(viewModel: viewModel)
             }
             .task {
-                // Load recipes when view appears
                 await viewModel.loadRecipes()
             }
         }
     }
+    
+    func errorView(error: RecipeService.Error) -> some View {
+        ErrorView(error: error) {
+            Task {
+                await viewModel.loadRecipes()
+            }
+        }
+    }
+    
+    var emptyView: some View {
+        ContentUnavailableView(
+            "No Recipes Found",
+            systemImage: "magnifyingglass",
+            description: Text("Try adjusting your filters")
+        )
+    }
+    
+    var listView: some View {
+        ScrollView {
+            LazyVStack(spacing: 20) {
+                ForEach(viewModel.filteredRecipes) { recipe in
+                    RecipeCardView(recipe: recipe)
+                }
+            }
+            .padding()
+        }
+        .background(Color(.systemGroupedBackground))
+    }
 }
 
-#Preview("Loaded") {
-    let service = RecipeService()
-    let viewModel = RecipeListViewModel(recipeService: service)
-    RecipeListView(viewModel: viewModel)
-}
-
-#Preview("Loading") {
+#Preview {
     let service = RecipeService()
     let viewModel = RecipeListViewModel(recipeService: service)
     RecipeListView(viewModel: viewModel)

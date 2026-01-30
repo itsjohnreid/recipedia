@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-/// A sheet view for displaying all filter options
 struct FilterSheetView: View {
     @Bindable var viewModel: RecipeListViewModel
     @Environment(\.dismiss) private var dismiss
@@ -15,76 +14,78 @@ struct FilterSheetView: View {
     var body: some View {
         NavigationStack {
             Form {
-                // Dietary Section
-                Section("Dietary Preferences") {
-                    Toggle("Vegetarian Only", isOn: $viewModel.showOnlyVegetarian)
-                }
-                
-                // Servings Section
-                Section("Servings") {
-                    Picker("Number of Servings", selection: $viewModel.servingsFilter) {
-                        ForEach(RecipeListViewModel.ServingsFilter.allCases) { filter in
-                            Text(filter.rawValue).tag(filter)
-                        }
-                    }
-                    .pickerStyle(.menu)
-                }
-                
-                // Ingredients Section
-                Section {
-                    TextField("e.g., garlic, tomatoes", text: $viewModel.includeIngredients)
-                        .autocapitalization(.none)
-                    
-                    Text("Comma-separated ingredients that must be included")
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-                } header: {
-                    Text("Include Ingredients")
-                }
-                
-                Section {
-                    TextField("e.g., nuts, dairy", text: $viewModel.excludeIngredients)
-                        .autocapitalization(.none)
-                    
-                    Text("Comma-separated ingredients to exclude")
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-                } header: {
-                    Text("Exclude Ingredients")
-                }
-                
-                // Instructions Section
-                Section {
-                    TextField("Search in cooking steps", text: $viewModel.instructionSearch)
-                        .autocapitalization(.none)
-                    
-                    Text("Find recipes with specific cooking techniques")
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-                } header: {
-                    Text("Instructions Search")
-                }
-                
-                // Clear Filters
-                if viewModel.hasActiveFilters {
-                    Section {
-                        Button(role: .destructive, action: {
-                            viewModel.clearFilters()
-                        }) {
-                            Label("Clear All Filters", systemImage: "xmark.circle.fill")
-                        }
-                    }
-                }
+                dietaryAttributesSection
+                servingsSection
+                ingredientsSections
             }
             .navigationTitle("Filters")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button(role: .destructive) {
+                        viewModel.clearFilters()
+                    } label: {
+                        Text("Clear")
+                    }
+                    .disabled(!viewModel.hasActiveFilters)
+                }
+
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Done") {
                         dismiss()
                     }
                 }
             }
+        }
+    }
+    
+    var dietaryAttributesSection: some View {
+        Section("Dietary Attributes") {
+            ForEach(DietaryAttribute.allCases, id: \.self) { attribute in
+                Toggle(
+                    isOn: Binding(
+                        get: { viewModel.selectedDietaryAttributes.contains(attribute) },
+                        set: { isSelected in
+                            if isSelected {
+                                viewModel.selectedDietaryAttributes.insert(attribute)
+                            } else {
+                                viewModel.selectedDietaryAttributes.remove(attribute)
+                            }
+                        }
+                    )
+                ) {
+                    DietaryTagView(attribute: attribute, font: .footnote)
+                }
+                .tint(.accentColor)
+            }
+        }
+    }
+    
+    var servingsSection: some View {
+        Section("Servings") {
+            Picker("Number of Servings", selection: $viewModel.servingsFilter) {
+                ForEach(RecipeListViewModel.ServingsFilter.allCases) { filter in
+                    Text(filter.rawValue).tag(filter)
+                }
+            }
+            .pickerStyle(.menu)
+        }
+    }
+    
+    @ViewBuilder
+    var ingredientsSections: some View {
+        Section {
+            TextField("e.g., garlic, tomatoes", text: $viewModel.includeIngredients)
+                .autocapitalization(.none)
+        } header: {
+            Text("Include Ingredients")
+        }
+        
+        Section {
+            TextField("e.g., nuts, dairy", text: $viewModel.excludeIngredients)
+                .autocapitalization(.none)
+        } header: {
+            Text("Exclude Ingredients")
         }
     }
 }

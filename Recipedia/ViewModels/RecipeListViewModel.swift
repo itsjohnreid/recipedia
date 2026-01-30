@@ -7,33 +7,20 @@
 
 import Foundation
 
-/// ViewModel for managing recipe list, search, and filtering
 @Observable
 class RecipeListViewModel {
-    // MARK: - Properties
-    
     private let recipeService: RecipeService
     
-    /// Search text entered by user
     var searchText = ""
     
-    /// Filter: Show only vegetarian recipes
-    var showOnlyVegetarian = false
+    var selectedDietaryAttributes: Set<DietaryAttribute> = []
     
-    /// Filter: Servings range
     var servingsFilter: ServingsFilter = .any
     
-    /// Filter: Ingredients to include (comma-separated)
     var includeIngredients = ""
     
-    /// Filter: Ingredients to exclude (comma-separated)
     var excludeIngredients = ""
-    
-    /// Filter: Search in instructions
-    var instructionSearch = ""
-    
-    // MARK: - Servings Filter Options
-    
+        
     enum ServingsFilter: String, CaseIterable, Identifiable {
         case any = "Any"
         case single = "1-2 servings"
@@ -54,14 +41,15 @@ class RecipeListViewModel {
         }
     }
     
-    // MARK: - Computed Properties
     
-    /// Filtered recipes based on all active filters
+    init(recipeService: RecipeService) {
+        self.recipeService = recipeService
+    }
+    
     var filteredRecipes: [Recipe] {
         let recipes = recipeService.recipes
         
         return recipes.filter { recipe in
-            // Search text filter (searches in title and description)
             if !searchText.isEmpty {
                 let searchLower = searchText.lowercased()
                 let matchesTitle = recipe.title.lowercased().contains(searchLower)
@@ -71,17 +59,19 @@ class RecipeListViewModel {
                 }
             }
             
-            // Vegetarian filter
-            if showOnlyVegetarian && !recipe.hasDietaryAttribute(.vegetarian) {
-                return false
+            if !selectedDietaryAttributes.isEmpty {
+                let hasAllAttributes = selectedDietaryAttributes.allSatisfy { attribute in
+                    recipe.dietaryAttributes.contains(attribute)
+                }
+                if !hasAllAttributes {
+                    return false
+                }
             }
             
-            // Servings filter
             if !servingsFilter.matches(recipe.servings) {
                 return false
             }
             
-            // Include ingredients filter
             if !includeIngredients.isEmpty {
                 let includeList = parseIngredientList(includeIngredients)
                 let hasAllIngredients = includeList.allSatisfy { ingredient in
@@ -94,7 +84,6 @@ class RecipeListViewModel {
                 }
             }
             
-            // Exclude ingredients filter
             if !excludeIngredients.isEmpty {
                 let excludeList = parseIngredientList(excludeIngredients)
                 let hasAnyExcluded = excludeList.contains { ingredient in
@@ -107,77 +96,48 @@ class RecipeListViewModel {
                 }
             }
             
-            // Instruction search filter
-            if !instructionSearch.isEmpty {
-                let searchLower = instructionSearch.lowercased()
-                let matchesAnyInstruction = recipe.instructions.contains { instruction in
-                    instruction.lowercased().contains(searchLower)
-                }
-                if !matchesAnyInstruction {
-                    return false
-                }
-            }
-            
             return true
         }
     }
     
-    /// Check if any filters are active
     var hasActiveFilters: Bool {
-        showOnlyVegetarian ||
+        !selectedDietaryAttributes.isEmpty ||
         servingsFilter != .any ||
         !includeIngredients.isEmpty ||
-        !excludeIngredients.isEmpty ||
-        !instructionSearch.isEmpty
+        !excludeIngredients.isEmpty
     }
     
-    /// Count of active filters
     var activeFilterCount: Int {
         var count = 0
-        if showOnlyVegetarian { count += 1 }
+        if !selectedDietaryAttributes.isEmpty { count += selectedDietaryAttributes.count }
         if servingsFilter != .any { count += 1 }
         if !includeIngredients.isEmpty { count += 1 }
         if !excludeIngredients.isEmpty { count += 1 }
-        if !instructionSearch.isEmpty { count += 1 }
         return count
     }
-    
-    // MARK: - Initialization
-    
-    init(recipeService: RecipeService) {
-        self.recipeService = recipeService
-    }
-    
-    // MARK: - Methods
-    
-    /// Load recipes from the service
+        
     func loadRecipes() async {
         await recipeService.loadRecipes()
     }
     
-    /// Clear all filters
     func clearFilters() {
-        showOnlyVegetarian = false
+        selectedDietaryAttributes.removeAll()
         servingsFilter = .any
         includeIngredients = ""
         excludeIngredients = ""
-        instructionSearch = ""
     }
     
-    /// Parse comma-separated ingredient list
     private func parseIngredientList(_ text: String) -> [String] {
         text.split(separator: ",")
             .map { $0.trimmingCharacters(in: .whitespaces) }
             .filter { !$0.isEmpty }
     }
-    
-    // MARK: - Convenience Accessors
-    
+        
     var isLoading: Bool {
         recipeService.isLoading
     }
     
-    var error: RecipeService.RecipeError? {
+    var error: RecipeService.Error? {
         recipeService.error
     }
 }

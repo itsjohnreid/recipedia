@@ -4,8 +4,6 @@
     "title": "Classic Margherita Pizza",
     "description": "A traditional Italian pizza with fresh mozzarella, tomatoes, and basil on a crispy thin crust.",
     "servings": 4,
-    "prepTimeMinutes": 20,
-    "cookTimeMinutes": 15,
     "ingredients": [
       "500g pizza dough",
       "200g fresh mozzarella cheese",
@@ -25,16 +23,15 @@
       "Remove from oven and top with fresh basil leaves.",
       "Let cool for 2 minutes, slice, and serve hot."
     ],
-    "dietary": ["vegetarian"],
-    "imageURL": null
+    "dietaryAttributes": [
+      "vegetarian"
+    ]
   },
   {
     "id": "recipe-002",
     "title": "Thai Green Curry",
     "description": "A fragrant and spicy Thai curry with vegetables in a coconut milk base.",
     "servings": 6,
-    "prepTimeMinutes": 15,
-    "cookTimeMinutes": 25,
     "ingredients": [
       "2 tbsp green curry paste",
       "400ml coconut milk",
@@ -58,16 +55,17 @@
       "Stir in Thai basil leaves just before serving.",
       "Serve hot with jasmine rice and lime wedges."
     ],
-    "dietary": ["vegetarian", "glutenFree", "dairyFree"],
-    "imageURL": null
+    "dietaryAttributes": [
+      "vegetarian",
+      "glutenFree",
+      "dairyFree"
+    ]
   },
   {
     "id": "recipe-003",
     "title": "Grilled Lemon Herb Chicken",
     "description": "Juicy grilled chicken breasts marinated in lemon, garlic, and fresh herbs.",
     "servings": 4,
-    "prepTimeMinutes": 10,
-    "cookTimeMinutes": 20,
     "ingredients": [
       "4 boneless chicken breasts",
       "3 lemons, juiced and zested",
@@ -88,16 +86,17 @@
       "Let rest for 5 minutes before serving.",
       "Serve with grilled vegetables or a fresh salad."
     ],
-    "dietary": ["glutenFree", "dairyFree", "lowCarb"],
-    "imageURL": null
+    "dietaryAttributes": [
+      "glutenFree",
+      "dairyFree",
+      "lowCarb"
+    ]
   },
   {
     "id": "recipe-004",
     "title": "Vegan Buddha Bowl",
     "description": "A nourishing bowl packed with roasted vegetables, quinoa, chickpeas, and tahini dressing.",
     "servings": 2,
-    "prepTimeMinutes": 15,
-    "cookTimeMinutes": 30,
     "ingredients": [
       "1 cup quinoa",
       "1 can chickpeas, drained",
@@ -122,16 +121,18 @@
       "Top with roasted vegetables, chickpeas, and fresh greens.",
       "Drizzle with tahini dressing and serve."
     ],
-    "dietary": ["vegan", "vegetarian", "glutenFree", "dairyFree"],
-    "imageURL": null
+    "dietaryAttributes": [
+      "vegan",
+      "vegetarian",
+      "glutenFree",
+      "dairyFree"
+    ]
   },
   {
     "id": "recipe-005",
     "title": "Spaghetti Carbonara",
     "description": "A classic Roman pasta dish with eggs, cheese, pancetta, and black pepper.",
     "servings": 4,
-    "prepTimeMinutes": 10,
-    "cookTimeMinutes": 20,
     "ingredients": [
       "400g spaghetti",
       "200g pancetta or guanciale, diced",
@@ -152,16 +153,13 @@
       "Add reserved pasta water a little at a time if needed to reach desired consistency.",
       "Serve immediately with extra cheese and black pepper."
     ],
-    "dietary": [],
-    "imageURL": null
+    "dietaryAttributes": []
   },
   {
     "id": "recipe-006",
     "title": "Chocolate Chip Cookies",
     "description": "Chewy, buttery cookies loaded with chocolate chips – a timeless favorite.",
     "servings": 24,
-    "prepTimeMinutes": 15,
-    "cookTimeMinutes": 12,
     "ingredients": [
       "2 1/4 cups all-purpose flour",
       "1 tsp baking soda",
@@ -185,16 +183,16 @@
       "Cool on baking sheet for 2 minutes, then transfer to a wire rack.",
       "Store in an airtight container for up to 5 days."
     ],
-    "dietary": ["vegetarian", "nutFree"],
-    "imageURL": null
+    "dietaryAttributes": [
+      "vegetarian",
+      "nutFree"
+    ]
   },
   {
     "id": "recipe-007",
     "title": "Greek Salad",
     "description": "A refreshing Mediterranean salad with tomatoes, cucumbers, olives, and feta cheese.",
     "servings": 4,
-    "prepTimeMinutes": 15,
-    "cookTimeMinutes": 0,
     "ingredients": [
       "4 large tomatoes, cut into wedges",
       "1 cucumber, sliced",
@@ -217,16 +215,18 @@
       "Toss gently before serving.",
       "Serve immediately or refrigerate for up to 2 hours."
     ],
-    "dietary": ["vegetarian", "glutenFree", "nutFree", "lowCarb"],
-    "imageURL": null
+    "dietaryAttributes": [
+      "vegetarian",
+      "glutenFree",
+      "nutFree",
+      "lowCarb"
+    ]
   },
   {
     "id": "recipe-008",
     "title": "Beef Tacos",
     "description": "Seasoned ground beef tacos with all your favorite toppings.",
     "servings": 6,
-    "prepTimeMinutes": 10,
-    "cookTimeMinutes": 15,
     "ingredients": [
       "500g ground beef",
       "1 onion, diced",
@@ -253,16 +253,15 @@
       "Top with lettuce, tomatoes, cheese, sour cream, and salsa.",
       "Serve with lime wedges on the side."
     ],
-    "dietary": ["nutFree"],
-    "imageURL": null
+    "dietaryAttributes": [
+      "nutFree"
+    ]
   },
   {
     "id": "recipe-009",
     "title": "Caprese Salad",
     "description": "A simple Italian salad showcasing fresh mozzarella, tomatoes, and basil.",
     "servings": 2,
-    "prepTimeMinutes": 10,
-    "cookTimeMinutes": 0,
     "ingredients": [
       "3 large ripe tomatoes, sliced",
       "250g fresh mozzarella, sliced",
@@ -280,16 +279,18 @@
       "Let sit at room temperature for 10 minutes before serving.",
       "Serve as an appetizer or light lunch."
     ],
-    "dietary": ["vegetarian", "glutenFree", "nutFree", "lowCarb"],
-    "imageURL": null
+    "dietaryAttributes": [
+      "vegetarian",
+      "glutenFree",
+      "nutFree",
+      "lowCarb"
+    ]
   },
   {
     "id": "recipe-010",
     "title": "Quinoa Stuffed Bell Peppers",
     "description": "Colorful bell peppers filled with a savory quinoa, black bean, and vegetable mixture.",
     "servings": 4,
-    "prepTimeMinutes": 20,
-    "cookTimeMinutes": 35,
     "ingredients": [
       "4 large bell peppers (any color)",
       "1 cup quinoa",
@@ -318,16 +319,17 @@
       "If using cheese, sprinkle on top and bake uncovered for 5 more minutes.",
       "Garnish with fresh cilantro and serve hot."
     ],
-    "dietary": ["vegetarian", "glutenFree", "nutFree"],
-    "imageURL": null
+    "dietaryAttributes": [
+      "vegetarian",
+      "glutenFree",
+      "nutFree"
+    ]
   },
   {
     "id": "recipe-011",
     "title": "Salmon Teriyaki",
     "description": "Pan-seared salmon fillets glazed with a sweet and savory teriyaki sauce.",
     "servings": 4,
-    "prepTimeMinutes": 10,
-    "cookTimeMinutes": 15,
     "ingredients": [
       "4 salmon fillets (about 150g each)",
       "1/4 cup soy sauce",
@@ -353,16 +355,16 @@
       "Return salmon to the skillet and spoon sauce over the fillets.",
       "Garnish with sesame seeds and green onions before serving."
     ],
-    "dietary": ["glutenFree", "dairyFree"],
-    "imageURL": null
+    "dietaryAttributes": [
+      "glutenFree",
+      "dairyFree"
+    ]
   },
   {
     "id": "recipe-012",
     "title": "Mushroom Risotto",
     "description": "Creamy Italian rice dish with earthy mushrooms and Parmesan cheese.",
     "servings": 4,
-    "prepTimeMinutes": 10,
-    "cookTimeMinutes": 30,
     "ingredients": [
       "300g Arborio rice",
       "500g mixed mushrooms, sliced",
@@ -388,16 +390,17 @@
       "Season with salt and pepper.",
       "Garnish with fresh parsley and serve immediately."
     ],
-    "dietary": ["vegetarian", "glutenFree", "nutFree"],
-    "imageURL": null
+    "dietaryAttributes": [
+      "vegetarian",
+      "glutenFree",
+      "nutFree"
+    ]
   },
   {
     "id": "recipe-013",
     "title": "Chicken Stir-Fry",
     "description": "Quick and colorful stir-fry with tender chicken and crisp vegetables in a savory sauce.",
     "servings": 4,
-    "prepTimeMinutes": 15,
-    "cookTimeMinutes": 12,
     "ingredients": [
       "500g chicken breast, sliced thin",
       "2 cups mixed vegetables (broccoli, bell peppers, snap peas, carrots)",
@@ -424,16 +427,15 @@
       "Add cornstarch slurry and cook for 1 minute until sauce thickens.",
       "Serve hot over steamed rice."
     ],
-    "dietary": ["dairyFree"],
-    "imageURL": null
+    "dietaryAttributes": [
+      "dairyFree"
+    ]
   },
   {
     "id": "recipe-014",
     "title": "Lentil Soup",
     "description": "Hearty and nutritious soup with red lentils, vegetables, and warming spices.",
     "servings": 6,
-    "prepTimeMinutes": 10,
-    "cookTimeMinutes": 35,
     "ingredients": [
       "2 cups red lentils, rinsed",
       "1 onion, diced",
@@ -462,16 +464,19 @@
       "Garnish with fresh parsley.",
       "Serve hot with crusty bread."
     ],
-    "dietary": ["vegan", "vegetarian", "glutenFree", "dairyFree", "nutFree"],
-    "imageURL": null
+    "dietaryAttributes": [
+      "vegan",
+      "vegetarian",
+      "glutenFree",
+      "dairyFree",
+      "nutFree"
+    ]
   },
   {
     "id": "recipe-015",
     "title": "Avocado Toast",
     "description": "Simple yet satisfying breakfast or lunch with creamy avocado on toasted bread.",
     "servings": 2,
-    "prepTimeMinutes": 5,
-    "cookTimeMinutes": 5,
     "ingredients": [
       "4 slices sourdough bread",
       "2 ripe avocados",
@@ -492,7 +497,11 @@
       "Add optional toppings if desired.",
       "Serve immediately while toast is still warm."
     ],
-    "dietary": ["vegan", "vegetarian", "dairyFree", "nutFree"],
-    "imageURL": null
+    "dietaryAttributes": [
+      "vegan",
+      "vegetarian",
+      "dairyFree",
+      "nutFree"
+    ]
   }
 ]
