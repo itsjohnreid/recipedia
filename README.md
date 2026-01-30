@@ -2,6 +2,9 @@
 
 SwiftUI recipe browser with search and filtering. Built as a mock API demo.
 
+<img src="image1.png" width="200"/>
+<img src="image2.png" width="200"/>
+
 ## Setup
 
 ```
